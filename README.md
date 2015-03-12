@@ -1,2 +1,1 @@
-# linux
-Notes of Linux command
+# Notes of Linux command

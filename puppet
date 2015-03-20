@@ -1,0 +1,47 @@
+#Puppet是基于ruby写成的，所以安装前要准备好ruby环境。在中心
+#的server上安装puppet-server包，并运行puppetmasterd进程；在
+#被管理机上安装puppet包，并运行puppetd进程。另外，在每台
+#主机上配置好自己的hostname，之后每台机器要以hostname区分。
+
+1.安装ruby环境
+  yum install ruby ruby-rdoc
+2.安装puppet
+  2.1.Server端安装
+    rpm -Uvh epel-release-*.rpm
+    yum install puppet-server
+    chkconfig -level 2345 puppetmaster on
+    echo "172.16.228.18 master.test.cn master" >> /etc/hosts
+    echo "172.16.228.19 slave1.test.cn slave1" >> /etc/hosts
+  2.2.客户端安装
+    rpm -Uvh epel-release-*.rpm
+    yum install puppet
+    chkconfig -level 2345 puppet on
+    echo "172.16.228.18 master.test.cn master" >> /etc/hosts
+    echo "172.16.228.19 slave1.test.cn slave1" >> /etc/hosts
+3.启动puppet
+  3.1.Server端
+    cat - >> /etc/puppet/manifests/site.pp << EOF
+    # Create "/tmp/testfile" if it doesn't exist.
+    class test_class {
+      file { "/tmp/testfile":ensure=>present,mode=>644,
+        owner=>root,group=>root
+      }
+    }
+    # tell puppet on which client to run the class
+    node slave1.test.cn {
+      include test_class
+    }
+EOF
+    service puppetmaster start
+  3.2.客户端
+    /etc/init.d/puppet once -v
+      这时客户机会去连server，但是由于连接是在ssl上的，而
+    server还没有sign过客户端的cert，客户机被断开。
+      到server端执行：puppetca -list，会显示等待签名的客户端
+    的主机名，执行：puppetca -sign <客户端主机名>即可。
+    /etc/init.d/puppet once -v
+4.测试
+  4.1.server端
+    puppetmasterd -d -no-daemonize -v -trace
+  4.2.客户端
+    puppetd -test -trace -debug

@@ -1,0 +1,19 @@
+ssh(1) - OpenSSH SSH client (remote login program)
+
+1.复制SSH密钥到目标主机，开启无密码SSH登录
+  ssh-copy-id -i [identity_file] user@remoteHost
+2.从某主机的80端口开启到本地主机2001端口的隧道
+  ssh -N -L2001:localhost:80 remoteHost
+  现在可以直接在浏览器中输入http://localhost:2001访问这个网站
+3.将你的麦克风输出到远程计算机的扬声器
+  dd if=/dev/dsp | ssh -c arcfour -C user@remoteHost dd of=/dev/dsp
+4.比较远程和本地文件
+  ssh user@remoteHost cat /path/to/remotefile | diff /path/to/localfile -
+5.通过SSH挂载目录/文件系统
+  sshfs user@remoteHost:/path/to/folder /path/to/mount/point
+6.通过中间主机建立SSH连接
+  ssh -t remoteHostA ssh remoteHostB
+7.通过SSH连接屏幕
+  ssh -t user@remoteHost screen -r
+8.通过SSH运行复杂的远程shell命令
+  ssh remoteHost -l user $(cat cmd.txt)

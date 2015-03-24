@@ -3,8 +3,13 @@ ssh(1) - OpenSSH SSH client (remote login program)
 1.复制SSH密钥到目标主机，开启无密码SSH登录
   ssh-copy-id -i [identity_file] user@remoteHost
 2.从某主机的80端口开启到本地主机2001端口的隧道
-  ssh -N -L2001:localhost:80 remoteHost
-  现在可以直接在浏览器中输入http://localhost:2001访问这个网站
+  ssh -N -L2001:remoteHost:80 user@proxyHost
+  这个命令在本机打开了2001端口，对本机2001端口的请求通过proxyHost作为跳板
+  转到remoteHost的80端口上。现在可以直接在浏览器中输入http://localhost:2001
+  访问这个网站。举一个具体例子，运行：
+    ssh -f -N -L 0.0.0.0:80:facebook.com:80 shell.cjb.net
+    ssh -f -N -L 0.0.0.0:443:facebook.com:443 shell.cjb.net
+  然后在/etc/hosts里面添加127.0.0.1 facebook.com，剩下的你懂的。
 3.将你的麦克风输出到远程计算机的扬声器
   dd if=/dev/dsp | ssh -c arcfour -C user@remoteHost dd of=/dev/dsp
 4.比较远程和本地文件

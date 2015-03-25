@@ -1,0 +1,6 @@
+
+
+1.备份MBR
+  dd if=/dev/sda1 of=/mbr.bak bs=512 count=1
+2.恢复MBR
+  dd if=/mbr.bak of=/dev/sda1 bs=512 count=1

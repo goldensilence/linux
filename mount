@@ -1,0 +1,5 @@
+mount(8) - mount a filesystem
+
+1.映射一个内存目录
+  mount -t tmpfs -o size=1024m tmpfs /mnt/ram
+  这个命令开了一块1G内存来当目录用。如果里面没文件是不会占用内存的。

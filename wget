@@ -1,0 +1,4 @@
+
+
+1.用wget的递归方式下载整个网站
+  wget --random-wait -r -p -e robots=off -U Mozilla www.example.com -limit-rate=20K -o logfile.txt

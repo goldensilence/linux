@@ -1,0 +1,69 @@
+
+
+1.显示系统信息
+  docker info
+2.显示版本号
+  docker version
+在报告bug时，结合以上两个命令，可以方便docker的开发者快速定位问题。
+
+3.挂载正在后台运行的容器
+  docker attach container_id
+在开发应用的过程中运用这个命令可以随时观察容器内进程的运行状况。
+4.从dockerfile或源码构建新image
+  docker build path|URL|-
+5.把有修改的容器提交成新的image
+  docker commit container_id repository:tag
+6.把容器内的文件/文件夹复制到主机上
+  docker cp container_id:path hostpath
+7.列出容器内文件状态变化
+  docker diff container_id
+8.把容器系统文件打包并导出来
+  docker export container_id
+9.列出images
+  docker images
+10.加载/导出容器系统文件
+  docker import URL|- repository:tag
+  docker save image_name
+  docker load
+11.查看容器运行时详细信息
+  docker inspect container_id|image_name
+12.杀掉容器的进程
+  docker kill container_id
+13.打印出主机端口与容器暴露出的端口的NAT映射关系
+  docker port container_id
+14.暂停/恢复容器里的所有进程
+  docker pause container_id
+  docker unpause container_id
+15.打印出正在运行的容器
+  docker ps
+  docker ps -a
+16.删除指定的容器
+  docker rm container_id
+17.指定删除image文件
+  docker rmi image_name
+18.在新容器中运行命令
+  docker run options image_name command arguments
+  docker run --cidfile /tmp/docker_test.cid ubuntu echo "test"
+19.开启/停止容器
+  docker start container_id
+  docker stop container_id
+  docker restart container_id
+20.用标签名来管理image
+  docker tag image_name:tag registryHost/username/name:tag
+21.显示容器内运行的进程
+  docker top container_id
+22.阻塞指定容器直到该容器停止
+  docker wait container_id
+23.打印容器实时的系统事件
+  docker events
+24.打印指定image中每一层image命令行的历史记录
+  docker history image_name
+25.批量打印容器进程的运行日志
+  docker logs container_id
+26.登录docker hub服务
+  docker login server
+27.Pull/Push image
+  docker pull image_name:tag
+  docker push image_name:tag
+28.通过关键字搜索分享的image
+  docker search TERM

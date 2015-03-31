@@ -43,7 +43,8 @@
   docker rmi image_name
 18.在新容器中运行命令
   docker run options image_name command arguments
-  docker run --cidfile /tmp/docker_test.cid ubuntu echo "test"
+    docker run --cidfile /tmp/docker_test.cid ubuntu echo "test"
+    docker run -t -i ubuntu:14.04 /bin/bash
 19.开启/停止容器
   docker start container_id
   docker stop container_id
@@ -64,6 +65,9 @@
   docker login server
 27.Pull/Push image
   docker pull image_name:tag
+    docker pull ubuntu:14.04
+    docker pull registry.hub.docker.com/ubuntu:14.04
+    docker pull d1.dockerpull.com:5000/ubuntu:14.04
   docker push image_name:tag
 28.通过关键字搜索分享的image
   docker search TERM

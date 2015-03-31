@@ -11,22 +11,33 @@
 在开发应用的过程中运用这个命令可以随时观察容器内进程的运行状况。
 4.从dockerfile或源码构建新image
   docker build path|URL|-
+    docker build -t "username/imageName:tag" /path/to/dockerfile
 5.把有修改的容器提交成新的image
   docker commit container_id repository:tag
+    docker commit -m "update_info" 0b2616b0e5a8 username/imageName:tag
 6.把容器内的文件/文件夹复制到主机上
   docker cp container_id:path hostpath
 7.列出容器内文件状态变化
   docker diff container_id
 8.把容器系统文件打包并导出来
   docker export container_id
+    docker export 7691a814370e > ubuntu.tar
 9.列出images
   docker images
+  docker images image_name
 10.加载/导出容器系统文件
   docker import URL|- repository:tag
+    cat ubuntu.tar | docker import - ubuntu:14.04
+    docker import - ubuntu:14.04 < ubuntu.tar.gz
+    docker import http://example.com/exampleimage.tgz example/imagerepo
   docker save image_name
+    docker save -o ubuntu_14.04.tar ubuntu:14.04
   docker load
+    docker load --input ubuntu_14.04.tar
+    docker load < ubuntu_14.04.tar
 11.查看容器运行时详细信息
   docker inspect container_id|image_name
+    docker inspect --format "{{ .State.Pid }}" mycontainer
 12.杀掉容器的进程
   docker kill container_id
 13.打印出主机端口与容器暴露出的端口的NAT映射关系
@@ -41,16 +52,22 @@
   docker rm container_id
 17.指定删除image文件
   docker rmi image_name
+    docker rmi myimage
+    docker rmi myimage:mytag
 18.在新容器中运行命令
   docker run options image_name command arguments
     docker run --cidfile /tmp/docker_test.cid ubuntu echo "test"
     docker run -t -i ubuntu:14.04 /bin/bash
+    docker run -d ubuntu /bin/sh -c "mycmds"
+    docker run -d -p 5000:5000 registry
+    docker run -d -p 5000:5000 -v /opt/registry:/tmp/registry registry
 19.开启/停止容器
   docker start container_id
   docker stop container_id
   docker restart container_id
 20.用标签名来管理image
   docker tag image_name:tag registryHost/username/name:tag
+    docker tag 5db5f8471261 username/imageName:tag
 21.显示容器内运行的进程
   docker top container_id
 22.阻塞指定容器直到该容器停止
@@ -69,5 +86,8 @@
     docker pull registry.hub.docker.com/ubuntu:14.04
     docker pull d1.dockerpull.com:5000/ubuntu:14.04
   docker push image_name:tag
+    docker push myimage
 28.通过关键字搜索分享的image
   docker search TERM
+    docker search centos
+    docker search fedora -s 10

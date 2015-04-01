@@ -59,6 +59,8 @@
     docker run --cidfile /tmp/docker_test.cid ubuntu echo "test"
     docker run -t -i ubuntu:14.04 /bin/bash
     docker run -d ubuntu /bin/sh -c "mycmds"
+    docker run -d -P --name web -v /src/app:/app training/app python app.py
+    docker run -d -P --name web -v /src/app:/app:ro training/app python app.py
     docker run -d -p 5000:5000 registry
     docker run -d -p 5000:5000 -v /opt/registry:/tmp/registry registry
     docker run -d -p 5000:5000 -v /home/user/registry-conf:/registry-conf \
@@ -67,6 +69,14 @@
                -e STORAGE_PATH=/registry -e AWS_KEY=AKIAHSHB43HS3J92MXZ \
                -e AWS_SECRET=xdDowwlK7TJajV1Y7EoOZrmuPEJlHYcNP2k4j49T \
                -e SEARCH_BACKEND=sqlalchemy -p 5000:5000 registry
+    docker run -d -v /dbdata --name dbdata postgres echo dbdata container
+    docker run -d --volumes-from dbdata --name db1 postgres
+    docker run -d --volumes-from db1 --name db3 postgres
+    docker run --volumes-from dbdata -v $(pwd):/backup ubuntu tar cvf /backup/backup.tar /dbdata
+利用数据卷容器备份数据卷
+    docker run -v /dbdata2 --name dbdata2 ubuntu /bin/bash
+    docker run --volumes-from dbdata2 -v $(pwd):/backup busybox tar xvf /backup/backup.tar
+利用数据卷容器恢复数据卷
 19.开启/停止容器
   docker start container_id
   docker stop container_id
@@ -74,6 +84,7 @@
 20.用标签名来管理image
   docker tag image_name:tag registryHost/username/name:tag
     docker tag 5db5f8471261 username/imageName:tag
+    docker tag ba58 192.168.1.100:5000/test
 21.显示容器内运行的进程
   docker top container_id
 22.阻塞指定容器直到该容器停止

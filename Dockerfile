@@ -58,3 +58,7 @@ CMD /usr/sbin/nginx
 # 配置容器启动后执行的命令，并且不可被docker run提供的参数覆盖
 # 每个Dockerfile只能有一个；当指定多个时，只有最后一个起效
 ENTRYPOINT echo "This is entrypoint"
+
+# ONBUILD指令，格式为ONBUILD [instruction]
+# 配置当所创建的镜像作为其它新创建镜像的基础镜像时，所执行的指令
+# 使用ONBUILD指令的镜像，推荐在标签中注明，例如ruby:1.9-onbuild
